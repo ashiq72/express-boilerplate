@@ -1,8 +1,12 @@
-var express = require("express");
-var app = express();
+import express from "express";
 
-app.get("/", function (req, res) {
-  res.send("hello world!!!");
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("Hello Vercel + Express + TypeScript 🚀");
 });
 
-app.listen(3000);
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
