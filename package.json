@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "dist/server.js",
   "scripts": {
-    "build": "tsc",
+    "build": "npx tsc && node copy.js",
     "start": "node dist/server.js",
-    "dev": "ts-node-dev src/server.ts"
+    "dev": "npx ts-node-dev src/server.ts"
   },
   "dependencies": {
     "express": "^4.19.2"
