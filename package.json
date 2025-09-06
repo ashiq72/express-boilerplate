@@ -1,18 +1,29 @@
 {
-  "name": "my-express-app",
+  "name": "express",
   "version": "1.0.0",
-  "main": "dist/server.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "build": "npx tsc && node copy.js",
-    "start": "node dist/server.js",
-    "dev": "npx ts-node-dev src/server.ts"
+  "start": "ts-node src/index.ts",
+  "build": "tsc",
+  "serve": "node dist/index.js"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashiq72/express.git"
   },
-  "dependencies": {
-    "express": "^4.19.2"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashiq72/express/issues"
   },
+  "homepage": "https://github.com/ashiq72/express#readme",
   "devDependencies": {
     "@types/express": "^5.0.3",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.4.0"
+    "@types/node": "^24.3.1",
+    "express": "^5.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   }
 }
