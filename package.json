@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "start": "ts-node src/index.ts",
-  "build": "tsc",
-  "serve": "node dist/index.js"
-},
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "serve": "node dist/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ashiq72/express.git"
@@ -25,5 +25,8 @@
     "express": "^5.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "mongoose": "^8.18.1"
   }
 }
