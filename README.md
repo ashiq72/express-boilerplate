@@ -124,5 +124,5 @@ Follow these instructions to get a copy of the project up and running on your lo
 2.  **Run the production server:**
     This command runs the compiled JavaScript code from the `dist` folder.
     ```bash
-    npm start
+    npm run start
     ```
