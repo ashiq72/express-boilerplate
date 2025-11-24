@@ -1,14 +1,22 @@
-import { NextFunction, Response } from "express";
-import { TErrorSources } from "../../interfaces/error";
+import { Request, Response, NextFunction } from "express";
+import { ZodError } from "zod";
 
-const globalErrorHandeller = (
+import config from "../../config";
+import { TErrorSources } from "../../interfaces/error";
+import { handleZodError } from "../errorHandlers/handleZodError";
+import handleValidationError from "../errorHandlers/handleValidationError";
+import handleCastError from "../errorHandlers/handleCastError";
+import handleDuplicateError from "../errorHandlers/handleDuplicateError";
+import AppError from "../errorHandlers/AppError";
+
+const globalErrorHandler = (
   err: any,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  let statusCode = err.statusCode || 500;
-  let message = err.message || "Internal Server Error";
+  let statusCode = 500;
+  let message = "Internal Server Error";
 
   let errorSources: TErrorSources = [
     {
@@ -16,11 +24,52 @@ const globalErrorHandeller = (
       message: "Something went wrong",
     },
   ];
+
+  if (err instanceof ZodError) {
+    const simplifiedError = handleZodError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  } else if (err?.name === "ValidationError") {
+    const simplifiedError = handleValidationError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  } else if (err?.name === "CastError") {
+    const simplifiedError = handleCastError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  } else if (err?.code === 11000) {
+    const simplifiedError = handleDuplicateError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  } else if (err instanceof AppError) {
+    statusCode = err?.statusCode;
+    message = err.message;
+    errorSources = [
+      {
+        path: "",
+        message: err?.message,
+      },
+    ];
+  } else if (err instanceof Error) {
+    message = err.message;
+    errorSources = [
+      {
+        path: "",
+        message: err?.message,
+      },
+    ];
+  }
+
   res.status(statusCode).json({
     success: false,
-    message: err.message || "Internal Server Error",
+    message,
     errorSources,
-    // stack: config.NODE_ENV == "development" ? err?.stack : null,
+    stack: config.NODE_ENV == "development" ? err?.stack : null,
   });
 };
-export default globalErrorHandeller;
+
+export default globalErrorHandler;
